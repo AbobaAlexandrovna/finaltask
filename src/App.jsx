@@ -5,6 +5,7 @@ import Body from './Body/Body';
 import { Route, Routes } from 'react-router-dom';
 import Favorite from './Favorite/Favorite';
 import React from 'react';
+import http from './API';
 
 const Wrapper = styled.div`
 background-color: #ffffff;
@@ -16,16 +17,26 @@ box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.25);
 `
 
 function App() {
-    const [items, setItems] = React.useState([])
 
+    const [items, setItems] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        http.get('flowers').then(response => {
+            setItems(response.data);
+            setIsLoading(false);
+        })
+        
+    }, []);
+   
     return (
 
         <Wrapper>
             <Toolbar></Toolbar>
             <Routes>
-                <Route path="" element={<Body />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/personalArea" element={<Favorite />} />
+                <Route path="" element={<Body isLoading={isLoading} items={items}/>} />
+                <Route path="/cart" element={<Cart isLoading={isLoading} items={items.filter(items => items.inCart === true)}/>} />
+                <Route path="/personalArea" element={<Favorite isLoading={isLoading} items={items.filter(items => items.inFavorite === true)}/>} />
             </Routes>
         </Wrapper>
 

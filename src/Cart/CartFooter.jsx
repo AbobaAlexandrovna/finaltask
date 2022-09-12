@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 const StyledCartFooter = styled.div`
@@ -54,6 +55,9 @@ const Ordering = styled.div`
 `;
 
 function CartFooter(props) {
+
+    const [price, setPrice] = React.useState(0)
+
     return (
         <StyledCartFooter>
             <StyledCost>
@@ -61,7 +65,7 @@ function CartFooter(props) {
                     <span>Общая стоимость:</span>
                 </TotalCost>
                 <AmountCost>
-                    <span>2345</span>
+                    <span>{price + ' руб.'}</span>
                 </AmountCost>
             </StyledCost>
             <Ordering>

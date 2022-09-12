@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import cart from '../assets/cart.svg';
 import personalArea from '../assets/personal-area.svg';
@@ -29,6 +30,8 @@ const NavButton = styled.button`
 `;
 
 function NavButtons(props) {
+    const [price, setPrice] = React.useState(0)
+
     return (
         <NavButtonsContainer>
             <Link to="/cart">
@@ -36,7 +39,7 @@ function NavButtons(props) {
                     <img src={cart} width="30" height="30" alt="Cart"/>
                 </NavButton>
             </Link>
-            <span>2122p</span>
+            <span>{price + ' руб.'}</span>
             <Link to="/personalArea">
                 <NavButton>
                     <img src={personalArea} width="25" height="25" alt="Personal"/>

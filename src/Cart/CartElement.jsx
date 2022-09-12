@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import deleteCart from '../assets/delete.svg';
+import React from 'react';
+import http from '../API';
 
 const StyledCartElement = styled.div`
     display: flex;
@@ -33,7 +35,6 @@ const Description = styled.div`
     width: 100%;
 `;
 
-
 const StyledDelete = styled.div`
     cursor: pointer;
     &:hover{
@@ -42,17 +43,27 @@ const StyledDelete = styled.div`
 `;
 
 function CartElement(props) {
+
+    const [isDelete, setIsDelete] = React.useState(props.item.inCart);
+
+    const OnDelete = () => {
+        
+        http.put(`/flowers/${props.item.id}`, {inCart: !isDelete}).then(response => {
+            setIsDelete(!isDelete);
+        });
+    };
+
     return (
         <StyledCartElement>
-           <img src={process.env.PUBLIC_URL + `/${props.id}.png`} width="100" height="100" alt="bouquet1"/>
+           <img src={props.item.imgUrl} width="100" height="100" alt={props.item.name}/>
            <Description>
                <NameCartElement>
-                    <span>{props.name}</span>
+                    <span>{props.item.name}</span>
                     <PriceCartElement>
-                        <span>{props.price}</span>
+                        <span>{props.item.price}</span>
                     </PriceCartElement>
                 </NameCartElement>
-                <StyledDelete>
+                <StyledDelete onClick={OnDelete}>
                 <img src={deleteCart} width="30" height="30" alt="deleteCart"/>
                 </StyledDelete>
             </Description>

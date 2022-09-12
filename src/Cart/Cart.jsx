@@ -2,29 +2,6 @@ import styled from "styled-components";
 import CartElement from "./CartElement";
 import CartFooter from "./CartFooter";
 
-const arr = [
-    {
-        name: "name 1",
-        id: 1,
-        price: 5000
-    },
-    {
-        name: "name 2",
-        id: 2,
-        price: 5000
-    },
-    {
-        name: "name 3",
-        id: 3,
-        price: 5000
-    },
-    {
-        name: "name 4",
-        id: 4,
-        price: 5000
-    },
-]
-
 const StyledCart = styled.div`
     
 `;
@@ -44,6 +21,27 @@ const CartElements = styled.div`
     gap: 20px;
 `;
 
+const StyledCardSkeleton = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+`;
+
+const CardSkeleton = styled.div`
+    outline: 1px solid #df6ca2;
+    background-color: pink;
+    width: 100%;
+    height: 100px;
+    box-shadow: 0px 10px 20px 2px rgba(179, 26, 26, 0.25);
+    border-radius: 20px;
+    &:hover{
+        transform: scale(1.1);
+    };
+`;
+
+// const SkeletonContainer = ``
+
 function Cart(props) {
     return (
         <StyledCart>
@@ -51,17 +49,28 @@ function Cart(props) {
                 <span>Корзина</span>
             </CartTitle>
             <CartElements>
-            {arr.map((obj) =>
-                    (
-                        <CartElement   
-                            favoriteEnabled={true}
-                            name = {obj.name}
-                            key = {obj.id}
-                            id = {obj.id}
-                            price = {obj.price} 
-                        />
+            {    
+                props.isLoading ?
+                (
+                    <StyledCardSkeleton>
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                    </StyledCardSkeleton>
+                )
+                : 
+                (
+                    props.items.map((obj) =>
+                        (
+                            <CartElement   
+                            key={obj.id}
+                            item={obj}
+                            />
+                        )
                     )
-                )}
+                )
+            }
             </CartElements>
             <CartFooter></CartFooter>
         </StyledCart>

@@ -3,6 +3,7 @@ import plus from '../assets/plus.svg';
 import like from '../assets/like.svg';
 import React from 'react';
 import checkMark from '../assets/check-mark.svg'
+import http from '../API';
 
 
 
@@ -78,40 +79,48 @@ const StyledDislike = styled(StyledLike)`
     &:active {
         background-color: transparent;
     }
-`
+`;
 
 const StyledLikeImg = styled.img`
     transform: translate(0px,2px);
-`
+`;
 
 function Card(props) {
-
-    const [isAdded, setIsAdded] = React.useState(false);
+    
+    const [isAdded, setIsAdded] = React.useState(props.item.inCart);
+    const [isFavorite, setIsFavorite] = React.useState(props.item.inFavorite);
 
     const OnPlus = () => {
-        setIsAdded(!isAdded);
+        
+        http.put(`/flowers/${props.item.id}`, {inCart: !isAdded}).then(response => {
+            setIsAdded(!isAdded);
+        });
+    };
+
+    const OnFavorite = () => {
+        
+        http.put(`/flowers/${props.item.id}`, {inFavorite: !isFavorite}).then(response => {
+            setIsFavorite(!isFavorite);
+        });
     };
 
     return (
         <CardConteiner>
-            {/* <img src={bouquet1} width="140" height="140" alt="bouquet1"/> */}
-            <img src={process.env.PUBLIC_URL + `/${props.id}.png`} width="140" height="140" alt="bouquet1"/>
+            <img src={props.item.imgUrl} width="140" height="140" alt={props.item.name}/>
             <NameCard>
-                {/* <span>Бабушкин сад</span> */}
-                <span>{props.name}</span>
+                <span>{props.item.name}</span>
             </NameCard> 
             <Description>
                 <PriceCard>
                     <span>Цена:</span>
-                    {/* <span>3465</span> */}
-                    <span>{props.price}</span>
+                    <span>{props.item.price}</span>
                 </PriceCard>
-                {props.favoriteEnabled ? 
-                    <StyledLike>
+                {!isFavorite ? 
+                    <StyledLike onClick={OnFavorite}>
                         <StyledLikeImg src={like} width="24" height="24" alt="Like"/>
                     </StyledLike>
                     : 
-                    <StyledDislike>
+                    <StyledDislike onClick={OnFavorite}>
                         <StyledLikeImg src={like} width="24" height="24" alt="Like"/>
                     </StyledDislike>
                 }
