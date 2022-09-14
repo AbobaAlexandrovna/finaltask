@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import plus from '../assets/plus.svg';
 import like from '../assets/like.svg';
 import React from 'react';
-import checkMark from '../assets/check-mark.svg'
-import http from '../API';
-
-
+import checkMark from '../assets/check-mark.svg';
+import { useDispatch } from 'react-redux';
+import {addCart, addFavorites} from '../state/slice';
 
 const CardConteiner = styled.div`
     display: flex;
@@ -21,7 +20,6 @@ const CardConteiner = styled.div`
         transform: scale(1.1);
     };
 `;
-
 
 const NameCard = styled.div`
     font-size: 1em;
@@ -86,22 +84,14 @@ const StyledLikeImg = styled.img`
 `;
 
 function Card(props) {
-    
-    const [isAdded, setIsAdded] = React.useState(props.item.inCart);
-    const [isFavorite, setIsFavorite] = React.useState(props.item.inFavorite);
+    const dispatch = useDispatch();
 
     const OnPlus = () => {
-        
-        http.put(`/flowers/${props.item.id}`, {inCart: !isAdded}).then(response => {
-            setIsAdded(!isAdded);
-        });
+        dispatch(addCart(props.item.id))
     };
 
     const OnFavorite = () => {
-        
-        http.put(`/flowers/${props.item.id}`, {inFavorite: !isFavorite}).then(response => {
-            setIsFavorite(!isFavorite);
-        });
+        dispatch(addFavorites(props.item.id))
     };
 
     return (
@@ -115,7 +105,7 @@ function Card(props) {
                     <span>Цена:</span>
                     <span>{props.item.price}</span>
                 </PriceCard>
-                {!isFavorite ? 
+                {!props.item.inFavorite ? 
                     <StyledLike onClick={OnFavorite}>
                         <StyledLikeImg src={like} width="24" height="24" alt="Like"/>
                     </StyledLike>
@@ -125,7 +115,7 @@ function Card(props) {
                     </StyledDislike>
                 }
                 <StyledPlus onClick={OnPlus}>
-                    <img src={isAdded ? checkMark : plus} width="24" height="24" alt="Plus"/>
+                    <img src={props.item.inCart ? checkMark : plus} width="24" height="24" alt="Plus"/>
                 </StyledPlus>
             </Description>
         </CardConteiner>

@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import deleteCart from '../assets/delete.svg';
 import React from 'react';
-import http from '../API';
+import { useDispatch } from 'react-redux';
+import {onDeleteCart} from '../state/slice';
 
 const StyledCartElement = styled.div`
     display: flex;
@@ -9,6 +10,7 @@ const StyledCartElement = styled.div`
     justify-content: center;
     gap: 20px;
     border-top: 1px solid #df6ca2;
+    width: 100%;
 `;
 
 const NameCartElement = styled.div`
@@ -43,14 +45,10 @@ const StyledDelete = styled.div`
 `;
 
 function CartElement(props) {
-
-    const [isDelete, setIsDelete] = React.useState(props.item.inCart);
+    const dispatch = useDispatch();
 
     const OnDelete = () => {
-        
-        http.put(`/flowers/${props.item.id}`, {inCart: !isDelete}).then(response => {
-            setIsDelete(!isDelete);
-        });
+        dispatch(onDeleteCart(props.item.id))
     };
 
     return (

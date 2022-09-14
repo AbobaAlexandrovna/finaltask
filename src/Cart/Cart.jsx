@@ -1,10 +1,7 @@
-import styled from "styled-components";
-import CartElement from "./CartElement";
-import CartFooter from "./CartFooter";
-
-const StyledCart = styled.div`
-    
-`;
+import styled from 'styled-components';
+import CartElement from './CartElement';
+import CartFooter from './CartFooter';
+import { useSelector } from 'react-redux';
 
 const CartTitle = styled.div`
     margin: 0;
@@ -16,7 +13,7 @@ const CartTitle = styled.div`
 const CartElements = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-items: center;
     padding: 40px;
     gap: 20px;
 `;
@@ -40,11 +37,11 @@ const CardSkeleton = styled.div`
     };
 `;
 
-// const SkeletonContainer = ``
-
 function Cart(props) {
+    const items = useSelector((state) => state.shop.items.filter((item) => item.inCart));
+
     return (
-        <StyledCart>
+        <div>
             <CartTitle>
                 <span>Корзина</span>
             </CartTitle>
@@ -54,14 +51,12 @@ function Cart(props) {
                 (
                     <StyledCardSkeleton>
                         <CardSkeleton />
-                        <CardSkeleton />
-                        <CardSkeleton />
-                        <CardSkeleton />
                     </StyledCardSkeleton>
                 )
                 : 
                 (
-                    props.items.map((obj) =>
+                    items.length > 0 ?
+                    items.map((obj) =>
                         (
                             <CartElement   
                             key={obj.id}
@@ -69,11 +64,13 @@ function Cart(props) {
                             />
                         )
                     )
+                    :
+                    <span>В корзине пока пусто =)</span>
                 )
             }
             </CartElements>
             <CartFooter></CartFooter>
-        </StyledCart>
+        </div>
     );
 };
 

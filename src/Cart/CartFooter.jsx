@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 const StyledCartFooter = styled.div`
     border-top:2px solid red;
@@ -50,13 +51,13 @@ const Ordering = styled.div`
     };
     &:active{
         background-color: #5ece76;
-    }
+    };
 
 `;
 
 function CartFooter(props) {
 
-    const [price, setPrice] = React.useState(0)
+    const price = useSelector((state) => state.shop.cartPrice);
 
     return (
         <StyledCartFooter>

@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import Card from "../Body/Card";
+import styled from 'styled-components';
+import Card from '../Body/Card';
+import { useSelector } from 'react-redux';
 
 const StyledFavorite = styled.div`
 `;
@@ -36,9 +37,10 @@ const CardSkeleton = styled.div`
     &:hover{
         transform: scale(1.1);
     };
-`
+`;
 
 function Favorite(props) {
+    const items = useSelector((state) => state.shop.items.filter((item) => item.inFavorite));
     return (
         <StyledFavorite>
             <FavoriteTitle>
@@ -57,7 +59,8 @@ function Favorite(props) {
                 )
                 :
                 (
-                    props.items.map((obj) =>
+                    items.length > 0 ?
+                    items.map((obj) =>
                         (
                             <Card   
                                 key={obj.id}
@@ -65,6 +68,8 @@ function Favorite(props) {
                             />
                         )
                     )
+                    :
+                    <span>В избранном пока пусто =)</span>
                 )
             }
             </FavoriteElements>

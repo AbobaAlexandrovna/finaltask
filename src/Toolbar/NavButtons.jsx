@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import cart from '../assets/cart.svg';
 import personalArea from '../assets/personal-area.svg';
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 const NavButtonsContainer = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const NavButton = styled.button`
 `;
 
 function NavButtons(props) {
-    const [price, setPrice] = React.useState(0)
+    const price = useSelector((state) => state.shop.cartPrice)
 
     return (
         <NavButtonsContainer>

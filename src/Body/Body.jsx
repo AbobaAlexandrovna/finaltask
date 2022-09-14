@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Card from './Card';
 
@@ -41,6 +42,7 @@ const CardSkeleton = styled.div`
 `;
 
 function Body(props) {
+    const items = useSelector((state) => state.shop.items)
 
     return (
         <BodyConteiner>
@@ -57,17 +59,7 @@ function Body(props) {
                         <CardSkeleton />
                         <CardSkeleton />
                     </StyledCardSkeleton>
-                )
-                 :
-                (
-                    props.items.map((obj) =>
-                        <Card
-                            key={obj.id}
-                            item={obj}
-                        />
-                    )
-
-               )
+                ) : items.map((obj) => <Card key={obj.id} item={obj}/>)
             }
             </Cards>
             
